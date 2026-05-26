@@ -1,7 +1,7 @@
 # WAD202 - Posts Manager
 
 **Welcome!**
-This challenge will help you practice REST APIs, the Fetch API, and Astro by building a small frontend that talks to a real running backend!
+This challenge will help you practice REST APIs, the Fetch API, and Astro by building a small frontend that talks to a real running backend.
 
 ## The Challenge
 
