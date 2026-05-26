@@ -1,0 +1,456 @@
+<!-- ---
+import "../styles/global.css";
+
+// const response = await fetch("http://localhost:3001/posts");
+// const data = await response.json();
+// console.log(response.status, data);
+
+const API = "http://localhost:3001";
+---
+
+//In class Example
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" href="/favicon.ico" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="generator" content={Astro.generator} />
+    <title>Astro</title>
+  </head>
+  <body class="min-h-screen bg-gray-50 text-gray-900">
+    <main class="mx-auto max-w-2xl p-8">
+      <h1>Express Backend Demo</h1>
+
+      <div class="mt-6 grid grid-col-2 gap-3">
+        <button
+          id="btn-list"
+          class="rounded bg-blue-900 px-4 py-2 text-white hover:bg-blue-700"
+        >
+          GET /posts
+        </button>
+        <button
+          class="rounded bg-blue-900 px-4 py-2 text-white hover:bg-blue-700"
+        >
+          GET /posts/1
+        </button>
+        <button
+          id="btn-create"
+          class="rounded bg-blue-900 px-4 py-2 text-white hover:bg-blue-700"
+        >
+          POST /posts
+        </button>
+        <button
+          class="rounded bg-blue-900 px-4 py-2 text-white hover:bg-blue-700"
+        >
+          PUT /posts
+        </button>
+        <button
+          class="rounded bg-blue-900 px-4 py-2 text-white hover:bg-blue-700"
+        >
+          PATCH /posts
+        </button>
+        <button
+          class="rounded bg-blue-900 px-4 py-2 text-white hover:bg-blue-700"
+        >
+          DELETE /posts
+        </button>
+      </div>
+
+      <h2>Response</h2>
+      <pre
+        id="output"
+        class="mt-2 overflow-auto rounded bg-gray-900 p-4 text-sm text-green-300">
+		click a button to etc tetcc
+	  </pre>
+    </main>
+
+    <script is:inline define:vars={{ API }}>
+      const output = document.getElementById("output");
+
+      function showResponse(status, data) {
+        output.textContent = `Status: ${status}\n\n${JSON.stringify(data, null, 2)}`;
+      }
+
+      async function getAllPosts() {
+        output.textContent = "loading....";
+
+        const url = API + "/posts";
+        const response = await fetch(url);
+        const data = await response.json();
+        // console.log(data);
+
+        showResponse(response.status, data);
+      }
+
+      async function createPost() {
+        output.textContent = "loading....";
+
+        //usually this is going to be coming from from user input
+        const newPost = {
+          title: "New post",
+          body: new Date().toISOString(),
+          userId: 234,
+        };
+
+        const url = `${API}/posts`;
+        fetch(url, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(newPost),
+        })
+          //   .then((response) => console.log(response.status))
+          .then((response) => response.json())
+          //   .then((data) => console.log(data.status))
+          .then((data) => {
+            showResponse(201, data);
+          })
+          .catch((error) => {
+            output.textContent = `Error: ${error.message}`;
+          });
+      }
+
+      document
+        .getElementById("btn-list")
+        .addEventListener("click", getAllPosts);
+
+      document
+        .getElementById("btn-create")
+        .addEventListener("click", createPost);
+    </script>
+  </body>
+</html> -->
+
+---
+import "../styles/global.css";
+
+const API = "http://localhost:3001";
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" href="/favicon.ico" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="generator" content={Astro.generator} />
+    <title>Astro</title>
+  </head>
+
+  <body class="min-h-screen bg-gray-50 text-gray-900">
+    <main class="mx-auto max-w-2xl p-8">
+      <h1 class="text-2xl font-bold">Express Backend Demo</h1>
+
+      <div class="mt-6 flex flex-col gap-4">
+        <!-- GET ALL POSTS -->
+         <p class="font-bold">GET /posts</p>
+        <button id="btn-list" class="rounded bg-blue-900 px-4 py-2 text-white hover:bg-blue-700 w-full mb-4">GET /posts</button>
+
+        <!-- GET ONE POST -->
+        <p class="font-bold">GET /posts/:id</p>
+        <div>
+          <input id="get-id" type="text" placeholder="id" class="mb-2 w-full rounded border px-2 py-1" />
+          <button id="btn-get-one" class="rounded bg-blue-900 px-4 py-2 text-white hover:bg-blue-700 w-full mb-4">GET /posts/:id</button>
+        </div>
+
+        <!-- POST -->
+        <p class="font-bold">POST /posts</p>
+        <div>
+          <input id="create-title" type="text" placeholder="title" class="mb-2 w-full rounded border px-2 py-1" />
+          <input id="create-body" type="text" placeholder="body" class="mb-2 w-full rounded border px-2 py-1" />
+          <input id="create-userId" type="text" placeholder="userId" class="mb-2 w-full rounded border px-2 py-1" />
+          <button id="btn-create" class="rounded bg-blue-900 px-4 py-2 text-white hover:bg-blue-700 w-full mb-4">POST /posts</button>
+        </div>
+      </div>
+        </div>
+
+        <!-- PUT -->
+        <p class="font-bold">PUT /posts/:id</p>
+        <div>
+          <input
+            id="put-id"
+            type="text"
+            placeholder="id"
+            class="mb-2 w-full rounded border px-2 py-1"
+          />
+
+          <input
+            id="put-title"
+            type="text"
+            placeholder="title"
+            class="mb-2 w-full rounded border px-2 py-1"
+          />
+
+          <input
+            id="put-body"
+            type="text"
+            placeholder="body"
+            class="mb-2 w-full rounded border px-2 py-1"
+          />
+
+          <input
+            id="put-userId"
+            type="text"
+            placeholder="userId"
+            class="mb-2 w-full rounded border px-2 py-1"
+          />
+
+          <button
+            id="btn-put"
+            class="rounded bg-blue-900 px-4 py-2 text-white hover:bg-blue-700 w-full mb-4"
+          >
+            PUT /posts
+          </button>
+        </div>
+
+        <!-- PATCH -->
+        <p class="font-bold">PATCH /posts/:id</p>
+        <div>
+          <input
+            id="patch-id"
+            type="text"
+            placeholder="id"
+            class="mb-2 w-full rounded border px-2 py-1"
+          />
+
+          <input
+            id="patch-title"
+            type="text"
+            placeholder="title"
+            class="mb-2 w-full rounded border px-2 py-1"
+          />
+
+          <input
+            id="patch-body"
+            type="text"
+            placeholder="body"
+            class="mb-2 w-full rounded border px-2 py-1"
+          />
+
+          <input
+            id="patch-userId"
+            type="text"
+            placeholder="userId"
+            class="mb-2 w-full rounded border px-2 py-1"
+          />
+
+          <button
+            id="btn-patch"
+            class="rounded bg-blue-900 px-4 py-2 text-white hover:bg-blue-700 w-full mb-4"
+          >
+            PATCH /posts
+          </button>
+        </div>
+
+        <!-- DELETE -->
+        <p class="font-bold">DELETE /posts/:id</p>
+        <div>
+          <input
+            id="delete-id"
+            type="text"
+            placeholder="id"
+            class="mb-2 w-full rounded border px-2 py-1"
+          />
+
+          <button
+            id="btn-delete"
+            class="rounded bg-blue-900 px-4 py-2 text-white hover:bg-blue-700 w-full mb-4"
+          >
+            DELETE /posts
+          </button>
+        </div>
+      </div>
+
+      <h2 class="font-bold text-xl">Response</h2>
+
+      <pre
+        id="output"
+        class="mt-2 overflow-auto rounded bg-gray-900 p-4 text-sm text-green-300"
+      >
+click a button to etc tetcc
+      </pre>
+    </main>
+
+    <script is:inline define:vars={{ API }}>
+      const output = document.getElementById("output");
+
+      function showResponse(status, data) {
+        output.textContent = `Status: ${status}\n\n${JSON.stringify(
+          data,
+          null,
+          2
+        )}`;
+      }
+
+      // GET ALL POSTS
+      async function getAllPosts() {
+        output.textContent = "loading....";
+
+        try {
+          const url = API + "/posts";
+
+          const response = await fetch(url);
+          const data = await response.json();
+
+          showResponse(response.status, data);
+        } catch (error) {
+          output.textContent = `Error: ${error.message}`;
+        }
+      }
+
+      // GET ONE POST
+      async function getOnePost() {
+        output.textContent = "loading....";
+
+        const id = document.getElementById("get-id").value;
+
+        try {
+          const response = await fetch(`${API}/posts/${id}`);
+          const data = await response.json();
+
+          showResponse(response.status, data);
+        } catch (error) {
+          output.textContent = `Error: ${error.message}`;
+        }
+      }
+
+      // CREATE POST
+      async function createPost() {
+        output.textContent = "loading....";
+
+        const newPost = {
+          title: document.getElementById("create-title").value,
+          body: document.getElementById("create-body").value,
+          userId: Number(
+            document.getElementById("create-userId").value
+          ),
+        };
+
+        try {
+          const response = await fetch(`${API}/posts`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(newPost),
+          });
+
+          const data = await response.json();
+
+          showResponse(response.status, data);
+        } catch (error) {
+          output.textContent = `Error: ${error.message}`;
+        }
+      }
+
+      // PUT POST
+      async function replacePost() {
+        output.textContent = "loading....";
+
+        const id = document.getElementById("put-id").value;
+
+        const updatedPost = {
+          title: document.getElementById("put-title").value,
+          body: document.getElementById("put-body").value,
+          userId: Number(document.getElementById("put-userId").value),
+        };
+
+        try {
+          const response = await fetch(`${API}/posts/${id}`, {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(updatedPost),
+          });
+
+          const data = await response.json();
+
+          showResponse(response.status, data);
+        } catch (error) {
+          output.textContent = `Error: ${error.message}`;
+        }
+      }
+
+      // PATCH POST
+      async function patchPost() {
+        output.textContent = "loading....";
+
+        const id = document.getElementById("patch-id").value;
+
+        const updatedData = {};
+
+        const title = document.getElementById("patch-title").value;
+        const body = document.getElementById("patch-body").value;
+        const userId = document.getElementById("patch-userId").value;
+
+        if (title) updatedData.title = title;
+        if (body) updatedData.body = body;
+        if (userId) updatedData.userId = Number(userId);
+
+        try {
+          const response = await fetch(`${API}/posts/${id}`, {
+            method: "PATCH",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(updatedData),
+          });
+
+          const data = await response.json();
+
+          showResponse(response.status, data);
+        } catch (error) {
+          output.textContent = `Error: ${error.message}`;
+        }
+      }
+
+      // DELETE POST
+      async function deletePost() {
+        output.textContent = "loading....";
+
+        const id = document.getElementById("delete-id").value;
+
+        try {
+          const response = await fetch(`${API}/posts/${id}`, {
+            method: "DELETE",
+          });
+
+          const data = await response.json();
+
+          showResponse(response.status, data);
+        } catch (error) {
+          output.textContent = `Error: ${error.message}`;
+        }
+      }
+
+      // Event listeners
+      document
+        .getElementById("btn-list")
+        .addEventListener("click", getAllPosts);
+
+      document
+        .getElementById("btn-get-one")
+        .addEventListener("click", getOnePost);
+
+      document
+        .getElementById("btn-create")
+        .addEventListener("click", createPost);
+
+      document
+        .getElementById("btn-put")
+        .addEventListener("click", replacePost);
+
+      document
+        .getElementById("btn-patch")
+        .addEventListener("click", patchPost);
+
+      document
+        .getElementById("btn-delete")
+        .addEventListener("click", deletePost);
+    </script>
+  </body>
+</html>
